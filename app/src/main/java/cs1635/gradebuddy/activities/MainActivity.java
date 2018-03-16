@@ -1,15 +1,17 @@
-package cs1635.gradebuddy;
+package cs1635.gradebuddy.activities;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import cs1635.gradebuddy.fragments.CalculateGpaFragment;
+import cs1635.gradebuddy.fragments.HistoryFragment;
+import cs1635.gradebuddy.fragments.HomeScreenFragment;
+import cs1635.gradebuddy.R;
 
 public class MainActivity extends FragmentActivity {
 

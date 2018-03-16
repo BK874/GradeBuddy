@@ -3,14 +3,17 @@
 
     <item
         android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_calculate_gap"
+        android:icon="@drawable/ic_equalizer_black_24dp"
         android:title="Calculate GPA" />
 
     <item
         android:id="@+id/navigation_history"
+        android:icon="@drawable/ic_history_black_24dp"
         android:title="History" />
 
 </menu>

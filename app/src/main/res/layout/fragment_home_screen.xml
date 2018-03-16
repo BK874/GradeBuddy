@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cs1635.gradebuddy.HomeScreenFragment">
+    tools:context="cs1635.gradebuddy.fragments.HomeScreenFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

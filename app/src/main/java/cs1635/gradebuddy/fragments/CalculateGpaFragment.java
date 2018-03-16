@@ -1,4 +1,4 @@
-package cs1635.gradebuddy;
+package cs1635.gradebuddy.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import cs1635.gradebuddy.R;
 
 public class CalculateGpaFragment extends Fragment {
     @Override
