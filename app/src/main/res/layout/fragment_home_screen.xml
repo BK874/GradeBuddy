@@ -1,0 +1,76 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cs1635.gradebuddy.HomeScreenFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="20sp">
+
+        <TextView
+            android:id="@+id/homeScreenTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_page_title"
+            android:layout_marginBottom="10sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:gravity="center"/>
+
+        <RelativeLayout
+            android:id="@+id/addClassLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/homeScreenTitle">
+
+            <TextView
+                android:id="@+id/usernameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textSize="20sp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/usernameTextView">
+
+                <TextView
+                    android:id="@+id/currentClassesTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="Current Classes:"
+                    android:textSize="18sp"/>
+
+                <Button
+                    android:id="@+id/addCandidateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Class"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/displayCandidatesLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10sp"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:layout_below="@+id/addClassLayout">
+
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</FrameLayout>
