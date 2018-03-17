@@ -7,4 +7,5 @@
     <string name="main_page_title"><u>Grade Buddy</u></string>
     <string name="calculate_gpa_title"><u>Calculate GPA</u></string>
     <string name="history_title"><u>History</u></string>
+    <string name="add_class_title"><u>Add Class</u></string>
 </resources>
