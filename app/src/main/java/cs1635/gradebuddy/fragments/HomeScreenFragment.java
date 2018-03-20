@@ -33,6 +33,8 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.addClassButton:
+
+                // Testing Firebase Create
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference myRef = database.getReference("message");
                 myRef.setValue("Guy");
@@ -43,7 +45,7 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                 Button backButton = (Button) popupView.findViewById(R.id.addClassBackButton);
                 backButton.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        myRef.removeValue();
+                        myRef.removeValue();  // Testing Firebase Delete
                         popupWindow.dismiss();
                     }});
 
