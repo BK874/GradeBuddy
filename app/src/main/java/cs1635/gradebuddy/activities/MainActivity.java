@@ -1,7 +1,7 @@
 package cs1635.gradebuddy.activities;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,9 +9,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import cs1635.gradebuddy.fragments.AddClassFragment;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
+
 import cs1635.gradebuddy.fragments.CalculateGpaFragment;
 import cs1635.gradebuddy.fragments.HistoryFragment;
 import cs1635.gradebuddy.fragments.HomeScreenFragment;
@@ -24,7 +30,7 @@ public class MainActivity extends FragmentActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
+        // Switches which fragment is loaded on bottom nav button pressed
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             if(item.getItemId() == R.id.navigation_home && !navbarLocked) {
@@ -60,8 +66,28 @@ public class MainActivity extends FragmentActivity {
         t.commit();
     }
 
-    public void setNavbarLocked(boolean locked) {
-        navbarLocked = locked;
+    /* Dims the background Activity when a PopupWindow is showing */
+    public void dimBehind(PopupWindow popupWindow) {
+        View container;
+        if (popupWindow.getBackground() == null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                container = (View) popupWindow.getContentView().getParent();
+            } else {
+                container = popupWindow.getContentView();
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                container = (View) popupWindow.getContentView().getParent().getParent();
+            } else {
+                container = (View) popupWindow.getContentView().getParent();
+            }
+        }
+        Context context = popupWindow.getContentView().getContext();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+        p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        p.dimAmount = 0.7f;
+        wm.updateViewLayout(container, p);
     }
 
 }

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "913515110219",
+    "firebase_url": "https://grade-buddy.firebaseio.com",
+    "project_id": "grade-buddy",
+    "storage_bucket": "grade-buddy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913515110219:android:4eb53393bb5b8081",
+        "android_client_info": {
+          "package_name": "cs1635.gradebuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913515110219-jffm1fhrd5ikl7ul2p3brkii2k40t1br.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cs1635.gradebuddy",
+            "certificate_hash": "99e16e7c07ded56f2168ec07e33ec968992f4ccf"
+          }
+        },
+        {
+          "client_id": "913515110219-ifs2qp9rt3io2f5lp7g1m1q4tido2eor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHTtjh686_kjO6xvkanUjSmihp1NsQcgE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913515110219-ifs2qp9rt3io2f5lp7g1m1q4tido2eor.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
