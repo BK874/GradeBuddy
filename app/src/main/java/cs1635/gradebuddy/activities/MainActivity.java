@@ -25,9 +25,9 @@ import cs1635.gradebuddy.R;
 
 public class MainActivity extends FragmentActivity {
 
-    private TextView mTextMessage;
     private boolean navbarLocked = false;
 
+    // Changes showing fragment based on what button is pressed in nav bar
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         // Switches which fragment is loaded on bottom nav button pressed
@@ -60,6 +60,7 @@ public class MainActivity extends FragmentActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    /* Sets current fragment */
     protected void setFragment(Fragment fragment) {
         android.support.v4.app.FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.contentFrame, fragment);

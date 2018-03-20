@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import cs1635.gradebuddy.R;
 
+/* Fragment that allows the user to calculate the GPA */
 public class CalculateGpaFragment extends Fragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,

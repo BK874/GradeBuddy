@@ -11,6 +11,7 @@ import android.view.View;
 
 import cs1635.gradebuddy.R;
 
+/* Activity that is shown at app launch - Handles the login process */
 public class LoginActivity extends AppCompatActivity {
 
     @Override
@@ -19,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     }
 
+    /* Check if login credentials are correct - go to MainActivity if so */
     public void onLoginPressed(View view) {
         Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
         LoginActivity.this.startActivity(myIntent);

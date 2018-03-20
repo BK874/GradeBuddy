@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import cs1635.gradebuddy.R;
 
+/* Fragment that displays previous semester's GPAs */
 public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

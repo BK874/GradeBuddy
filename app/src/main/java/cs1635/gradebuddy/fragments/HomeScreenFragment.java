@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
-import android.os.Build.*;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -17,7 +16,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import cs1635.gradebuddy.R;
 import cs1635.gradebuddy.activities.MainActivity;
 
+
+/* Fragment that acts as the home screen - shows current courses and allows for adding of new courses */
 public class HomeScreenFragment extends Fragment implements View.OnClickListener{
+
+    /* Called when this Fragment is initialized */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -30,10 +33,12 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    /* Handles button clicks */
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.addClassButton:
 
+            // Add Class button pressed - show popup window form input to get new class info
+            case R.id.addClassButton:
                 // Testing Firebase Create
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference myRef = database.getReference("message");
@@ -51,7 +56,6 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
 
                 popupWindow.showAsDropDown(popupView, 0, 0);
                 ((MainActivity) getActivity()).dimBehind(popupWindow);
-
                 break;
         }
     }
