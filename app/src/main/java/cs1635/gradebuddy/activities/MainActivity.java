@@ -11,12 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
-import android.widget.TextView;
-
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Logger;
 
 import cs1635.gradebuddy.fragments.CalculateGpaFragment;
 import cs1635.gradebuddy.fragments.HistoryFragment;
@@ -25,23 +19,21 @@ import cs1635.gradebuddy.R;
 
 public class MainActivity extends FragmentActivity {
 
-    private boolean navbarLocked = false;
-
     // Changes showing fragment based on what button is pressed in nav bar
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         // Switches which fragment is loaded on bottom nav button pressed
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            if(item.getItemId() == R.id.navigation_home && !navbarLocked) {
+            if(item.getItemId() == R.id.navigation_home) {
                 setFragment(new HomeScreenFragment());
                 return true;
             }
-            else if(item.getItemId() == R.id.navigation_calculate_gap && !navbarLocked) {
+            else if(item.getItemId() == R.id.navigation_calculate_gap) {
                 setFragment(new CalculateGpaFragment());
                 return true;
             }
-            else if(item.getItemId() == R.id.navigation_history && !navbarLocked) {
+            else if(item.getItemId() == R.id.navigation_history) {
                 setFragment(new HistoryFragment());
                 return true;
             }
