@@ -9,12 +9,20 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cs1635.gradebuddy.R;
 import cs1635.gradebuddy.activities.MainActivity;
+import cs1635.gradebuddy.fragments.Model.ClassCategory;
+import cs1635.gradebuddy.fragments.Model.Classes;
+import iammert.com.expandablelib.ExpandableLayout;
+import iammert.com.expandablelib.Section;
 
 
 /* Fragment that acts as the home screen - shows current courses and allows for adding of new courses */
@@ -29,8 +37,42 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
 
         Button b = (Button) view.findViewById(R.id.addClassButton);
         b.setOnClickListener(this);
+        ExpandableLayout layout = (ExpandableLayout) view.findViewById(R.id.expandable_layout);
+        layout.setRenderer(new ExpandableLayout.Renderer<ClassCategory,Classes>() {
+
+            @Override
+            public void renderParent(View view, ClassCategory classCategory, boolean isExpanded, int parentPosition) {
+                ((TextView)view.findViewById(R.id.tv_parent_name)).setText(ClassCategory.name);
+                view.findViewById(R.id.arrow).setBackgroundResource(isExpanded?R.drawable.ic_arrow_up: R.drawable.ic_arrow_down);
+            }
+
+            @Override
+            public void renderChild(View view, Classes classes, int parentPosition, int childPosition) {
+                ((TextView)view.findViewById(R.id.tv_child_name)).setText(Classes.name);
+
+            }
+
+
+        });
+
+        layout.addSection(getSection());
+        layout.addSection(getSection());
+        layout.addSection(getSection());
+
 
         return view;
+    }
+
+    private Section<ClassCategory, Classes> getSection() {
+        Section<ClassCategory, Classes> section = new Section();
+        ClassCategory classCategory = new ClassCategory("Class");
+        List<Classes> listClass = new ArrayList();
+        for(int i =0; i < 10; i++){
+            listClass.add(new Classes("Class" + i));
+        }
+        section.parent = classCategory;
+        section.children.addAll(listClass);
+        return section;
     }
 
     /* Handles button clicks */
