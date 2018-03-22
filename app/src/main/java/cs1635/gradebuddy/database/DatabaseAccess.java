@@ -1,6 +1,7 @@
 package cs1635.gradebuddy.database;
 
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +54,14 @@ public class DatabaseAccess extends AppCompatActivity {
     /* Creates a course in the database for the current user */
     public void createClass(Course newCourse) {
         database.getReference("users").child(currentUser).child("classes").child(newCourse.getName()).setValue(newCourse);
+    }
+
+    public void updateClass(Course oldCourse, Course newCourse) {
+        database.getReference("users").child(currentUser).child("classes").child(oldCourse.getName()).setValue(newCourse);
+    }
+
+    public void deleteClass(Course courseToBeDeleted) {
+        database.getReference("users").child(currentUser).child("classes").child(courseToBeDeleted.getName()).removeValue();
     }
 
 

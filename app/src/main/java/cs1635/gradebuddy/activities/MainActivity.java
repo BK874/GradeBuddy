@@ -19,6 +19,8 @@ import cs1635.gradebuddy.R;
 
 public class MainActivity extends FragmentActivity {
 
+    public static String currentUser = "User1";
+
     // Changes showing fragment based on what button is pressed in nav bar
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -57,6 +59,11 @@ public class MainActivity extends FragmentActivity {
         android.support.v4.app.FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.contentFrame, fragment);
         t.commit();
+    }
+
+    /* Static method that returns current user that any class can call with MainActivity.getCurrentUser() */
+    public static String getCurrentUser() {
+        return currentUser;
     }
 
     /* Dims the background Activity when a PopupWindow is showing */
