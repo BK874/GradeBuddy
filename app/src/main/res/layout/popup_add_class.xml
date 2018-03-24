@@ -1,8 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,18 +46,54 @@
                     android:id="@+id/classNameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords|textNoSuggestions"
-                    android:hint="Class name"
-                    android:maxLines="1"
-                    android:scrollHorizontally="true"/>
+                    android:inputType="textMultiLine|textCapWords"
+                    android:hint="Class Name"/>
 
-                <EditText
-                    android:id="@+id/classCreditEditText"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/creditsLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="Credits"
-                    android:layout_below="@+id/classNameEditText"/>
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/classNameEditText">
+
+                    <EditText
+                        android:id="@+id/classCreditEditText"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:hint="Credits"
+                        android:layout_alignParentLeft="true"/>
+
+                    <EditText
+                        android:id="@+id/gradeReceivedEditText"
+                        android:layout_width="70dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Grade"/>
+
+                    <CheckBox
+                        android:id="@+id/currentClassCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:scaleX="1"
+                        android:scaleY="1"
+                        android:text="In progress"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/addClassSubmitButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Add Class"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_below="@id/creditsLayout"/>
 
             </RelativeLayout>
 
@@ -65,4 +101,4 @@
 
     </RelativeLayout>
 
-</FrameLayout>
+</LinearLayout>

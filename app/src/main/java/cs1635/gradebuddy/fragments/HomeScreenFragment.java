@@ -1,10 +1,15 @@
 package cs1635.gradebuddy.fragments;
 
 import android.app.AlertDialog;
+import android.app.ExpandableListActivity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
@@ -21,10 +26,7 @@ import android.text.TextWatcher;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.mediation.OnContextChangedListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import cs1635.gradebuddy.R;
@@ -32,6 +34,10 @@ import cs1635.gradebuddy.activities.MainActivity;
 import cs1635.gradebuddy.database.DatabaseAccess;
 import cs1635.gradebuddy.database.GetClassesListener;
 import cs1635.gradebuddy.models.Course;
+import cs1635.gradebuddy.fragments.Model.ClassCategory;
+import cs1635.gradebuddy.fragments.Model.Classes;
+import iammert.com.expandablelib.ExpandableLayout;
+import iammert.com.expandablelib.Section;
 
 
 /* Fragment that acts as the home screen - shows current courses and allows for adding of new courses */
@@ -46,18 +52,57 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
 
         Button b = (Button) view.findViewById(R.id.addClassButton);
         b.setOnClickListener(this);
+        final ExpandableLayout layout = (ExpandableLayout) view.findViewById(R.id.expandable_layout);
+        layout.setRenderer(new ExpandableLayout.Renderer<ClassCategory,String>() {
 
+            @Override
+            public void renderParent(View view, ClassCategory classCategory, boolean isExpanded, int parentPosition) {
+                ((TextView)view.findViewById(R.id.tv_parent_name)).setText(ClassCategory.name);
+                view.findViewById(R.id.arrow).setBackgroundResource(isExpanded?R.drawable.ic_arrow_up: R.drawable.ic_arrow_down);
+            }
+
+            @Override
+            public void renderChild(View view, String string, int parentPosition, int childPosition) {
+                ((TextView)view.findViewById(R.id.tv_child_name)).setText(string);
+
+            }
+
+
+        });
+
+        // Display current classes (classes with an empty grade)
+        DatabaseAccess dba = new DatabaseAccess();
+        dba.setGetClassListener(new GetClassesListener() {
+            @Override
+            public void getClasses(List<Course> courses) {
+                for(Course currentCourse : courses) {
+                    if(currentCourse.getGrade().equals("")) {
+                        Section<ClassCategory, String> section = new Section();
+                        ClassCategory classCategory = new ClassCategory(currentCourse.getName());
+                        section.parent = classCategory;
+                        section.children.add("Course name: " + currentCourse.getName());
+                        section.children.add("# Credits: " + (String) Integer.toString(currentCourse.getCredits()));
+                        section.children.add("Current Grade: " + currentCourse.getGrade());
+                        layout.addSection(section);
+                    }
+                }
+
+            }
+        });
+
+        // Display username
+        String currentUser = MainActivity.getCurrentUser();
         TextView userName = (TextView)view.findViewById(R.id.usernameTextView);
         userName.setText(MainActivity.getCurrentUser());
 
-        // Testing Firebase Create - using dummy user "User1" to act as the current user
+        // Using dummy user "User1" to act as the current user - create this user in the database
         DatabaseAccess db = new DatabaseAccess();
-        db.createUser("User1", "user1@gmail.com", "password1234");
+        db.createUser(currentUser, "user1@gmail.com", "password1234");
 
         return view;
     }
 
-    /* Handles button clicks in this fragment */
+    /* Handles button clicks in this Fragment */
     public void onClick(View view) {
         switch(view.getId()) {
 
@@ -68,8 +113,11 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    /* Method that displays Add User popup window and all the logic that comes with it */
     public void createAddClassPopup() {
-        final View popupView = getLayoutInflater().inflate(R.layout.popup_add_class, null);
+        //final View popupView = getLayoutInflater().inflate(R.layout.popup_add_class, null);
+        LayoutInflater inflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View popupView = inflater.inflate(R.layout.popup_add_class, null);
         final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         popupWindow.setFocusable(true);
         popupWindow.showAsDropDown(popupView, 0, 0);
@@ -152,6 +200,7 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                         if(!exists) {
                             dba.createClass(newCourse);
                             Toast.makeText(getActivity(), className + " added", Toast.LENGTH_LONG).show();
+                            refreshFragment();
                         }
                         // Class exists, ask user if they'd like to replace one in database with the one they just made
                         else {
@@ -160,14 +209,16 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dba.createClass(newCourse);
-                                    Toast.makeText(getActivity(), className + " replaced", Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getActivity(), className + " replaced", Toast.LENGTH_LONG).show();
                                     dialog.dismiss();
+                                    refreshFragment();
                                 }
                             });
                             builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     Toast.makeText(getActivity(), className + " not replaced", Toast.LENGTH_LONG).show();
                                     dialog.dismiss();
+                                    refreshFragment();
                                 }
                             });
                             AlertDialog dialog = builder.create();
@@ -177,6 +228,11 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                     }
                 });
             }});
+    }
+
+    /* Refreshes the Fragment to reflect current Class changes/adds */
+    public void refreshFragment() {
+        getActivity().getFragmentManager().beginTransaction().replace(R.id.contentFrame, new HomeScreenFragment()).commit();
     }
 
 

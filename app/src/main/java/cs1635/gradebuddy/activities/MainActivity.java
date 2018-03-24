@@ -1,5 +1,7 @@
 package cs1635.gradebuddy.activities;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,7 +20,7 @@ import cs1635.gradebuddy.fragments.HistoryFragment;
 import cs1635.gradebuddy.fragments.HomeScreenFragment;
 import cs1635.gradebuddy.R;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
 
     public static String currentUser = "User1";
 
@@ -55,8 +58,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     /* Sets current fragment */
-    protected void setFragment(Fragment fragment) {
-        android.support.v4.app.FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+    protected void setFragment(android.app.Fragment fragment) {
+        FragmentTransaction t = getFragmentManager().beginTransaction();
         t.replace(R.id.contentFrame, fragment);
         t.commit();
     }

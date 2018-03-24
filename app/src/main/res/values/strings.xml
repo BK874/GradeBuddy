@@ -9,5 +9,5 @@
     <string name="history_title"><u>History</u></string>
     <string name="add_class_title">Add Class</string>
     <string name="title_activity_login">Sign in</string>
-
+    <string name="history_placeholder">Classes</string>
 </resources>

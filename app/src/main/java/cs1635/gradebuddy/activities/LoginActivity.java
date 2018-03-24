@@ -1,5 +1,6 @@
 package cs1635.gradebuddy.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,7 +13,7 @@ import android.view.View;
 import cs1635.gradebuddy.R;
 
 /* Activity that is shown at app launch - Handles the login process */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
