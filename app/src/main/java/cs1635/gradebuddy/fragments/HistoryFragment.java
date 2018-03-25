@@ -29,23 +29,27 @@ public class HistoryFragment extends Fragment implements GetClassesListener {
 
         final View view = inflater.inflate(R.layout.fragment_history, container, false);
         ScrollView sv = (ScrollView) view.findViewById(R.id.classesScrollView);
-        TextView tv = (TextView) view.findViewById(R.id.classesTextView);
+        final TextView tv = (TextView) view.findViewById(R.id.classesTextView);
         DatabaseAccess dba = new DatabaseAccess();
+
+
         dba.setGetClassListener(new GetClassesListener() {
             @Override
             public void getClasses(List<Course> courses) {
+                StringBuilder classList = new StringBuilder();
                 for(Course currentCourse : courses) {
                     // Do work with each individual course here - these are the courses of the current user
                     // Firebase is async so you have to use this List<Course> in this getClasses() method
+                    classList.append(currentCourse.getName() + "\t " + currentCourse.getGrade() + "\n");
                 }
+                tv.setText(classList);
+
+
             }
         });
-      
-       StringBuilder classList = new StringBuilder();
-        for(int i =0; i < 100; i++){
-            classList.append("Class " + i + "\n");
-        }
-        tv.setText(classList.toString());
+
+
+
 
         return view;
 

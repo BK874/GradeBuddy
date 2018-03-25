@@ -2,7 +2,6 @@ package cs1635.gradebuddy.database;
 
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
