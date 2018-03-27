@@ -27,27 +27,45 @@ public class DatabaseAccess extends AppCompatActivity {
         // This Listener is constantly feeding back the current user's classes from database and fires the
         // GetClassListener that passes a List<Course> to which ever fragment/activity implements it.
         // Example of getting a List<Course> is in the onCreate() method in HistoryFragment.
-        DatabaseReference coursesRef = database.getReference("users").child(currentUser).child("classes");
-        coursesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        if(!currentUser.equals("")) {
+            DatabaseReference coursesRef = database.getReference("users").child(currentUser).child("classes");
+            coursesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    List<Course> courses = new ArrayList<>();
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        Course course = child.getValue(Course.class);
+                        courses.add(course);
+                    }
+                    if (mListener != null)
+                        mListener.getClasses(courses);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        }
+    }
+
+    /* Creates a user in the database with username, email, and password fields */
+    public void createUser(String u, String em) {
+        final String username = u;
+        final String email = em;
+        final DatabaseReference usersRef =  database.getReference().child("users");
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Course> courses = new ArrayList<>();
                 for(DataSnapshot child : dataSnapshot.getChildren()) {
-                    Course course = child.getValue(Course.class);
-                    courses.add(course);
+                    if(!child.equals(username)) {
+                        usersRef.child(username).child("classes");
+                        usersRef.child(username).child("email").setValue(email);
+                    }
                 }
-                if(mListener != null)
-                    mListener.getClasses(courses);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-    }
-
-    /* Creates a user in the database with username, email, and password fields */
-    public void createUser(String username, String email, String password) {
-        database.getReference("users").child(username).child("email").setValue(email);
-        database.getReference("users").child(username).child("password").setValue(password);
     }
 
     /* Creates a course in the database for the current user */
@@ -56,7 +74,8 @@ public class DatabaseAccess extends AppCompatActivity {
     }
 
     public void updateClass(Course oldCourse, Course newCourse) {
-        database.getReference("users").child(currentUser).child("classes").child(oldCourse.getName()).setValue(newCourse);
+        deleteClass(oldCourse);
+        createClass(newCourse);
     }
 
     public void deleteClass(Course courseToBeDeleted) {

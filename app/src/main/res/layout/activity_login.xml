@@ -8,6 +8,7 @@
     tools:context="cs1635.gradebuddy.activities.LoginActivity">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,10 +16,10 @@
             android:id="@+id/loginTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
             android:layout_marginBottom="100dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="Login"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
         <RelativeLayout
             android:id="@+id/inputLayout"
@@ -32,33 +33,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:labelFor="@+id/loginEmail"
-                android:text="Email"/>
+                android:text="Email" />
 
             <EditText
                 android:id="@+id/loginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
                 android:layout_marginTop="10dp"
-                android:maxLines="1"
                 android:inputType="text"
-                android:layout_marginBottom="30dp"/>
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/labelForLoginPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/loginEmail"
                 android:labelFor="@+id/loginPassword"
-                android:text="Password"
-                android:layout_below="@id/loginEmail"/>
+                android:text="Password" />
 
             <EditText
                 android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/loginEmail"
                 android:layout_marginTop="10dp"
-                android:maxLines="1"
                 android:inputType="textPassword"
-                android:layout_below="@+id/loginEmail"/>
+                android:maxLines="1" />
 
         </RelativeLayout>
 
@@ -66,12 +67,26 @@
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_below="@+id/inputLayout"
             android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:onClick="onLoginPressed"
-            android:text="Login"
-            android:layout_below="@+id/inputLayout"/>
+            android:text="Login" />
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
 </android.support.constraint.ConstraintLayout>

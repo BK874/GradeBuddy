@@ -41,14 +41,11 @@ public class Calculations {
     /** The Calculations method works with the following code, given below as an EXAMPLE
      * Whoever, does the cacluclate, can do the firehouse portion:
      * public static void main(String[] args) {
-
             //in these brief basic example, user input for the mark and grade: where mark represents the grade in a particular secition nad weight is the percentage
             //ie overall quizzes mark = 80, and weight = worth 10%
-
              Scanner input = new Scanner(System.in);
              int counter = input.nextInt();
              Calcuations[] arr = new Calcuations[counter];
-
              for (int i = 0 ; i < counter ; i++) {
              double sectionMark = input.nextDouble();
              double weight = input.nextDouble();
@@ -56,7 +53,6 @@ public class Calculations {
              }
              System.out.println("The average mark for your assignments/exams is "+ Calculations.getAverage(arr));
              }
-
      * */
 
 
