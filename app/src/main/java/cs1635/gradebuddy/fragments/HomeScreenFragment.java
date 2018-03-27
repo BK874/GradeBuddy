@@ -56,6 +56,8 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
 
         Button b = (Button) view.findViewById(R.id.addClassButton);
         b.setOnClickListener(this);
+        Button gpaGoalButton = (Button) view.findViewById(R.id.checkGpaGoalButton);
+        gpaGoalButton.setOnClickListener(this);
         final ExpandableLayout layout = (ExpandableLayout) view.findViewById(R.id.expandable_layout);
         layout.setRenderer(new ExpandableLayout.Renderer<Course,String>() {
 
@@ -158,6 +160,9 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
             // Add Class button pressed - show popup window form input to get new class info
             case R.id.addClassButton:
                 createAddClassPopup(false, "", "", "");
+                break;
+            case R.id.checkGpaGoalButton:
+                createCheckGpaGoalPopup();
                 break;
         }
     }
@@ -324,6 +329,22 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                         popupWindow.dismiss();
                     }
                 });
+            }});
+    }
+
+    /* Method that displays the Check GPA Goal popup window and all the accompanying logic */
+    public void createCheckGpaGoalPopup(){
+        LayoutInflater inflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View popupView = inflater.inflate(R.layout.popup_check_gpa_goal, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupWindow.setFocusable(true);
+        popupWindow.showAsDropDown(popupView, 0, 0);
+        ((MainActivity) getActivity()).dimBehind(popupWindow);
+
+        Button backButton = (Button) popupView.findViewById(R.id.gpaGoalBackButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                popupWindow.dismiss();
             }});
     }
 
