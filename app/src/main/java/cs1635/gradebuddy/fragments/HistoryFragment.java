@@ -2,8 +2,10 @@ package cs1635.gradebuddy.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import java.util.List;
-
+import iammert.com.expandablelib.ExpandCollapseListener;
+import iammert.com.expandablelib.ExpandableLayout;
+import iammert.com.expandablelib.Section;
 
 import cs1635.gradebuddy.R;
 import cs1635.gradebuddy.database.DatabaseAccess;
@@ -28,23 +34,65 @@ public class HistoryFragment extends Fragment implements GetClassesListener {
 
 
         final View view = inflater.inflate(R.layout.fragment_history, container, false);
-        ScrollView sv = (ScrollView) view.findViewById(R.id.classesScrollView);
-        final TextView tv = (TextView) view.findViewById(R.id.classesTextView);
+        final TableLayout table = (TableLayout)view.findViewById(R.id.tableLayout);
+
+        //final TextView tv = (TextView) view.findViewById(R.id.classesTextView);
         DatabaseAccess dba = new DatabaseAccess();
 
 
         dba.setGetClassListener(new GetClassesListener() {
             @Override
             public void getClasses(List<Course> courses) {
-                StringBuilder classList = new StringBuilder();
                 for(Course currentCourse : courses) {
-                    // Do work with each individual course here - these are the courses of the current user
-                    // Firebase is async so you have to use this List<Course> in this getClasses() method
-                    classList.append(currentCourse.getName() + "\t " + currentCourse.getGrade() + "\n");
+//                    TableRow row = new TableRow(getActivity());
+//                    row.setPadding(5, 5, 5, 5);
+//
+//                    TextView classTextView = new TextView(getActivity());
+//                    classTextView.setText(currentCourse.getName());
+//                    classTextView.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+//
+//                    TextView gradeTextView = new TextView(getActivity());
+//                    gradeTextView.setText(currentCourse.getGrade());
+//                    gradeTextView.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+//
+//                    TextView creditsTextView = new TextView(getActivity());
+//                    String creditsString = Integer.toString(currentCourse.getCredits());
+//                    creditsTextView.setText(creditsString);
+//                    creditsTextView.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+//
+//                    row.addView(classTextView);
+//                    row.addView(gradeTextView);
+//                    row.addView(creditsTextView);
+//                    table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT, 1);
+                    TableRow tableRow = new TableRow(getActivity());
+                    tableRow.setPadding(5, 5, 5, 5);
+                    tableRow.setBackgroundColor(Color.parseColor("#ffffff"));
+
+                    TextView classTextView = new TextView(getActivity());
+                    classTextView.setText(currentCourse.getName());
+                    classTextView.setLayoutParams(layoutParams);
+
+                    TextView gradeTextView = new TextView(getActivity());
+                    String currentGradeString = currentCourse.getGrade();
+                    if(currentGradeString.equals(""))
+                        gradeTextView.setText("In progress");
+                    else
+                        gradeTextView.setText(currentCourse.getGrade());
+                    gradeTextView.setLayoutParams(layoutParams);
+
+                    TextView creditsTextView = new TextView(getActivity());
+                    String creditsString = Integer.toString(currentCourse.getCredits());
+                    creditsTextView.setText(creditsString);
+                    creditsTextView.setLayoutParams(layoutParams);
+
+                    tableRow.addView(creditsTextView, 0);
+                    tableRow.addView(gradeTextView, 0);
+                    tableRow.addView(classTextView, 0);
+                    table.addView(tableRow, 1);
                 }
-                tv.setText(classList);
-
-
             }
         });
 

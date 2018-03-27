@@ -15,13 +15,20 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
+
+import cs1635.gradebuddy.database.DatabaseAccess;
+import cs1635.gradebuddy.database.GetClassesListener;
 import cs1635.gradebuddy.fragments.CalculateGpaFragment;
 import cs1635.gradebuddy.fragments.HistoryFragment;
 import cs1635.gradebuddy.fragments.HomeScreenFragment;
 import cs1635.gradebuddy.R;
+import cs1635.gradebuddy.models.Course;
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity implements GetClassesListener {
     public static String currentUser = "User1";
 
     // Changes showing fragment based on what button is pressed in nav bar
@@ -50,6 +57,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        String currentUserEmail = mFirebaseUser.getEmail();
+        String[] tokenized = currentUserEmail.split("@");
+        DatabaseAccess dba = new DatabaseAccess();
+        dba.createUser(tokenized[0], currentUserEmail);
+        currentUser = tokenized[0];
 
         setFragment(new HomeScreenFragment());
 
@@ -92,5 +107,9 @@ public class MainActivity extends Activity {
         p.dimAmount = 0.7f;
         wm.updateViewLayout(container, p);
     }
+
+    /* Dummy method here because Android Studio doesn't recognize that getClasses()
+     * in the Listener implements the interface. This method doesn't do anything */
+    public void getClasses(List<Course> courses) { }
 
 }

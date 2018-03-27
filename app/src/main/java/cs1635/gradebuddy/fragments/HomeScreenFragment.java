@@ -148,9 +148,6 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
         TextView userName = (TextView)view.findViewById(R.id.usernameTextView);
         userName.setText("Username: " + MainActivity.getCurrentUser());
 
-        // Using dummy user "User1" to act as the current user - create this user in the database
-        dba.createUser(currentUser, "user1@gmail.com", "password1234");
-
         return view;
     }
 
