@@ -10,9 +10,7 @@
     <string name="add_class_title">Add Class</string>
     <string name="title_activity_login">Sign in</string>
     <string name="history_placeholder">Classes</string>
-
-    <string name="class_goal_title">Expected Grades</string>
-    <string name="class_goal_exams">Exams:</string>
-    <string name="class_goal_homework">Homework:</string>
-
+    <string name="class_goal_title">Goal</string>
+    <string name="class_goal_homework">Homework</string>
+    <string name="class_goal_exams">Exams</string>
 </resources>
