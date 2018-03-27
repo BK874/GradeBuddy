@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="80dp"
+    android:layout_marginTop="40dp">
+
+    <TextView
+        android:id="@+id/classGoalTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/class_goal_title"
+        android:layout_marginBottom="10sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/classGoalBackButton"
+        android:layout_width="40dp"
+        android:layout_height="35dp"
+        android:layout_margin="5dp"
+        android:drawableTop="@drawable/ic_close_white_32dp"
+        android:background="#ff0000"
+        android:layout_alignParentLeft="true"/>
+
+    <LinearLayout
+        android:id="@+id/classGoalContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/classGoalBackButton"
+        android:layout_alignStart="@+id/classGoalBackButton"
+        android:layout_below="@+id/classGoalTitle"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/classGoalHomework"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/class_goal_homework"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <!-- TODO: List classes -->
+
+        <TextView
+            android:id="@+id/classAssignments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/class_goal_exams"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        <!-- TODO: List Exams -->
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+</LinearLayout>
