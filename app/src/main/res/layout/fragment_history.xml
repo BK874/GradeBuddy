@@ -30,7 +30,6 @@
                 android:id="@+id/previousTermsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Previous Terms:"
                 android:textSize="20sp"
                 android:layout_alignParentLeft="true"/>
 
@@ -64,7 +63,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="3.67"
                     android:textSize="20sp" />
 
             </RelativeLayout>

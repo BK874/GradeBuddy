@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="com.github.iammert:ExpandableLayout-1.3">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/ExpandableLayout-1.3.aar/fe6160efd8cef2415c07cce8b54fd40b/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/ExpandableLayout-1.3.aar/fe6160efd8cef2415c07cce8b54fd40b/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/ExpandableLayout-1.3.aar/d715d59ae68c0287051b2f5fbb53fc35/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/ExpandableLayout-1.3.aar/d715d59ae68c0287051b2f5fbb53fc35/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -16,7 +16,11 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import cs1635.gradebuddy.activities.Calculations;
 import iammert.com.expandablelib.ExpandCollapseListener;
 import iammert.com.expandablelib.ExpandableLayout;
 import iammert.com.expandablelib.Section;
@@ -43,27 +47,8 @@ public class HistoryFragment extends Fragment implements GetClassesListener {
         dba.setGetClassListener(new GetClassesListener() {
             @Override
             public void getClasses(List<Course> courses) {
+                List<String> gradedCourses = new ArrayList<>();
                 for(Course currentCourse : courses) {
-//                    TableRow row = new TableRow(getActivity());
-//                    row.setPadding(5, 5, 5, 5);
-//
-//                    TextView classTextView = new TextView(getActivity());
-//                    classTextView.setText(currentCourse.getName());
-//                    classTextView.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-//
-//                    TextView gradeTextView = new TextView(getActivity());
-//                    gradeTextView.setText(currentCourse.getGrade());
-//                    gradeTextView.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-//
-//                    TextView creditsTextView = new TextView(getActivity());
-//                    String creditsString = Integer.toString(currentCourse.getCredits());
-//                    creditsTextView.setText(creditsString);
-//                    creditsTextView.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-//
-//                    row.addView(classTextView);
-//                    row.addView(gradeTextView);
-//                    row.addView(creditsTextView);
-//                    table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
                     TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT, 1);
@@ -79,8 +64,10 @@ public class HistoryFragment extends Fragment implements GetClassesListener {
                     String currentGradeString = currentCourse.getGrade();
                     if(currentGradeString.equals(""))
                         gradeTextView.setText("In progress");
-                    else
+                    else {
                         gradeTextView.setText(currentCourse.getGrade());
+                        gradedCourses.add(currentCourse.getGrade());
+                    }
                     gradeTextView.setLayoutParams(layoutParams);
 
                     TextView creditsTextView = new TextView(getActivity());
@@ -92,7 +79,13 @@ public class HistoryFragment extends Fragment implements GetClassesListener {
                     tableRow.addView(gradeTextView, 0);
                     tableRow.addView(classTextView, 0);
                     table.addView(tableRow, 1);
+
                 }
+                Calculations calc = new Calculations(0, 0);
+                double gpaAverage = calc.currentGPACalculatons(gradedCourses);
+                String gpaString = Double.toString(gpaAverage);
+                TextView gpa = (TextView)view.findViewById(R.id.overallTermGpaNumberTextView);
+                gpa.setText(gpaString);
             }
         });
 
