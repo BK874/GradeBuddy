@@ -56,7 +56,8 @@ public class DatabaseAccess extends AppCompatActivity {
     }
 
     public void updateClass(Course oldCourse, Course newCourse) {
-        database.getReference("users").child(currentUser).child("classes").child(oldCourse.getName()).setValue(newCourse);
+        deleteClass(oldCourse);
+        createClass(newCourse);
     }
 
     public void deleteClass(Course courseToBeDeleted) {

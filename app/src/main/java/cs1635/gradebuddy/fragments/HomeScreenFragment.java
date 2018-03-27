@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.text.TextWatcher;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ import cs1635.gradebuddy.database.GetClassesListener;
 import cs1635.gradebuddy.models.Course;
 import cs1635.gradebuddy.fragments.Model.ClassCategory;
 import cs1635.gradebuddy.fragments.Model.Classes;
+import iammert.com.expandablelib.ExpandCollapseListener;
 import iammert.com.expandablelib.ExpandableLayout;
 import iammert.com.expandablelib.Section;
 
@@ -49,39 +52,89 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home_screen, container, false);
+        final DatabaseAccess dba = new DatabaseAccess();
 
         Button b = (Button) view.findViewById(R.id.addClassButton);
         b.setOnClickListener(this);
         final ExpandableLayout layout = (ExpandableLayout) view.findViewById(R.id.expandable_layout);
-        layout.setRenderer(new ExpandableLayout.Renderer<ClassCategory,String>() {
+        layout.setRenderer(new ExpandableLayout.Renderer<Course,String>() {
 
             @Override
-            public void renderParent(View view, ClassCategory classCategory, boolean isExpanded, int parentPosition) {
-                ((TextView)view.findViewById(R.id.tv_parent_name)).setText(ClassCategory.name);
+            public void renderParent(View view, Course course, boolean isExpanded, int parentPosition) {
+                ((TextView)view.findViewById(R.id.tv_parent_name)).setText(course.getName());
                 view.findViewById(R.id.arrow).setBackgroundResource(isExpanded?R.drawable.ic_arrow_up: R.drawable.ic_arrow_down);
             }
 
             @Override
             public void renderChild(View view, String string, int parentPosition, int childPosition) {
                 ((TextView)view.findViewById(R.id.tv_child_name)).setText(string);
-
             }
+        });
 
+        layout.setExpandListener(new ExpandCollapseListener.ExpandListener<Course>() {
+            @Override
+            public void onExpanded(int i, final Course courseExpanded, View layout) {
+                final Course c = courseExpanded;
+                TextView parentText = (TextView)layout.findViewById(R.id.tv_parent_name);
+                parentText.setTypeface(null, Typeface.BOLD);
+                Button editClassButton = (Button)layout.findViewById(R.id.editClassButton);
+                Button deleteClassButton = (Button)layout.findViewById(R.id.deleteClassButton);
+                editClassButton.setVisibility(View.VISIBLE);
+                deleteClassButton.setVisibility(View.VISIBLE);
+                editClassButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        createAddClassPopup(true, c.getName(), Integer.toString(c.getCredits()), c.getGrade());
+                    }
+                });
+                deleteClassButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Delete this course?");
+                        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dba.deleteClass(courseExpanded);
+                                displayToast(courseExpanded.getName() + " deleted");
+                                dialog.dismiss();
+                                refreshFragment();
+                            }
+                        });
+                        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                displayToast(courseExpanded.getName() + " not deleted");
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                });
+            }
+        });
 
+        layout.setCollapseListener(new ExpandCollapseListener.CollapseListener<Course>() {
+            @Override
+            public void onCollapsed(int i, Course courseCollapsed, View layout) {
+                TextView parentText = (TextView)layout.findViewById(R.id.tv_parent_name);
+                parentText.setTypeface(null, Typeface.NORMAL);
+                Button editClassButton = (Button)layout.findViewById(R.id.editClassButton);
+                editClassButton.setVisibility(View.INVISIBLE);
+                Button deleteClassButton = (Button)layout.findViewById(R.id.deleteClassButton);
+                deleteClassButton.setVisibility(View.INVISIBLE);
+            }
         });
 
         // Display current classes (classes with an empty grade)
-        DatabaseAccess dba = new DatabaseAccess();
         dba.setGetClassListener(new GetClassesListener() {
             @Override
             public void getClasses(List<Course> courses) {
                 for(Course currentCourse : courses) {
                     if(currentCourse.getGrade().equals("")) {
-                        Section<ClassCategory, String> section = new Section();
-                        ClassCategory classCategory = new ClassCategory(currentCourse.getName());
-                        section.parent = classCategory;
+                        Section<Course, String> section = new Section();
+                        Course course = currentCourse;
+                        section.parent = course;
                         section.children.add("Course name: " + currentCourse.getName());
-                        section.children.add("# Credits: " + (String) Integer.toString(currentCourse.getCredits()));
+                        section.children.add("Number of Credits: " + (String) Integer.toString(currentCourse.getCredits()));
                         section.children.add("Current Grade: " + currentCourse.getGrade());
                         layout.addSection(section);
                     }
@@ -93,11 +146,10 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
         // Display username
         String currentUser = MainActivity.getCurrentUser();
         TextView userName = (TextView)view.findViewById(R.id.usernameTextView);
-        userName.setText(MainActivity.getCurrentUser());
+        userName.setText("Username: " + MainActivity.getCurrentUser());
 
         // Using dummy user "User1" to act as the current user - create this user in the database
-        DatabaseAccess db = new DatabaseAccess();
-        db.createUser(currentUser, "user1@gmail.com", "password1234");
+        dba.createUser(currentUser, "user1@gmail.com", "password1234");
 
         return view;
     }
@@ -108,13 +160,13 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
 
             // Add Class button pressed - show popup window form input to get new class info
             case R.id.addClassButton:
-                createAddClassPopup();
+                createAddClassPopup(false, "", "", "");
                 break;
         }
     }
 
     /* Method that displays Add User popup window and all the logic that comes with it */
-    public void createAddClassPopup() {
+    public void createAddClassPopup(final boolean editting, final String cName, final String cCredits, final String cGrade) {
         //final View popupView = getLayoutInflater().inflate(R.layout.popup_add_class, null);
         LayoutInflater inflater = (LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View popupView = inflater.inflate(R.layout.popup_add_class, null);
@@ -129,16 +181,29 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                 popupWindow.dismiss();
             }});
 
+        final TextView popupTitle = (TextView)popupView.findViewById(R.id.addClassTitle);
         final EditText checkClassEditText = (EditText)popupView.findViewById(R.id.classNameEditText);
         final EditText checkCreditsEditText = (EditText)popupView.findViewById(R.id.classCreditEditText);
         final EditText gradeEditText = (EditText)popupView.findViewById(R.id.gradeReceivedEditText);
         final CheckBox currentClassCheckBox = (CheckBox) popupView.findViewById(R.id.currentClassCheckBox);
         final Button addClassButton = (Button) popupView.findViewById(R.id.addClassSubmitButton);
-        gradeEditText.setText("");
-        gradeEditText.setEnabled(true);
+        if(editting) {
+            popupTitle.setText("Edit Course");
+            checkClassEditText.setText(cName);
+            checkClassEditText.setSelection(checkClassEditText.length());
+            checkCreditsEditText.setText(cCredits);
+            checkCreditsEditText.setSelection(checkCreditsEditText.length());
+            gradeEditText.setText(cGrade);
+            addClassButton.setText("Edit Course");
+        }
+        else {
+            popupTitle.setText("Add Course");
+            gradeEditText.setText("");
+        }
+        gradeEditText.setEnabled(false);
         addClassButton.setEnabled(false);
 
-        // Make sure both text boxes are filled in before unlocking add Add Class Button in the input form
+        // Make sure all fields are properly filled out before enabling Add Class button via the following button/checkbox listeners
         checkClassEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int i, int i1, int i2) { }
@@ -153,11 +218,12 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
             public void afterTextChanged(Editable editable) { }
         });
         checkCreditsEditText.addTextChangedListener(new TextWatcher() {
+            String gradeString = gradeEditText.getText().toString();
             @Override
             public void beforeTextChanged(CharSequence s, int i, int i1, int i2) { }
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if(s.toString().trim().length() == 0 || checkClassEditText.getText().toString().trim().length() == 0)
+                if(s.toString().trim().length() == 0 || checkClassEditText.getText().toString().trim().length() == 0 || (gradeString.equals("") && currentClassCheckBox.isChecked()))
                     addClassButton.setEnabled(false);
                 else
                     addClassButton.setEnabled(true);
@@ -165,18 +231,42 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
             @Override
             public void afterTextChanged(Editable editable) { }
         });
+        gradeEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int i, int i1, int i2) { }
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                if(currentClassCheckBox.isChecked() && (s.toString().equals("A+") || s.toString().equals("A") || s.toString().equals("A-") || s.toString().equals("B+") || s.toString().equals("B") || s.toString().equals("B-") || s.toString().equals("C+") || s.toString().equals("C") || s.toString().equals("C-") || s.toString().equals("D+") || s.toString().equals("D") || s.toString().equals("D-") || s.toString().equals("F") || s.toString().equals("")))
+                    addClassButton.setEnabled(true);
+                else
+                    addClassButton.setEnabled(false);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) { }
+        });
         currentClassCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton checkBox, boolean isChecked) {
-                if(checkBox.isChecked()) {
+                String classString = checkClassEditText.getText().toString();
+                String creditsString = checkCreditsEditText.getText().toString();
+                String gradeString = gradeEditText.getText().toString();
+                if(!checkBox.isChecked()) {
                     gradeEditText.setText("");
                     gradeEditText.setEnabled(false);
+                    if(classString.length() > 0 && creditsString.length() > 0)
+                        addClassButton.setEnabled(true);
                 }
-                else
+                else if(currentClassCheckBox.isChecked()) {
                     gradeEditText.setEnabled(true);
+                    if (currentClassCheckBox.isChecked() && (gradeString.toString().equals("A+") || gradeString.toString().equals("A") || gradeString.toString().equals("A-") || gradeString.toString().equals("B+") || gradeString.toString().equals("B") || gradeString.toString().equals("B-") || gradeString.toString().equals("C+") || gradeString.toString().equals("C") || gradeString.toString().equals("C-") || gradeString.toString().equals("D+") || gradeString.toString().equals("D") || gradeString.toString().equals("D-") || gradeString.toString().equals("F")))
+                        addClassButton.setEnabled(true);
+                    else
+                        addClassButton.setEnabled(false);
+                }
             }
         });
 
+        // Add Class button clicked, add this new class to Database while checking if it is a duplicate (same class name)
         addClassButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final DatabaseAccess dba = new DatabaseAccess();
@@ -186,6 +276,7 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                 final int classCredits = Integer.parseInt((String) classCreditsEditText.getText().toString());
                 String gradeReceived = gradeEditText.getText().toString();
                 final Course newCourse = new Course(className, classCredits, gradeReceived);
+                final Course oldCourse = new Course(cName, classCredits, cGrade);
                 dba.setGetClassListener(new GetClassesListener() {
                     @Override
                     public void getClasses(List<Course> courses) {
@@ -196,33 +287,42 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                                 break;
                             }
                         }
-                        // Class doesn't exist - add it to database
-                        if(!exists) {
-                            dba.createClass(newCourse);
-                            Toast.makeText(getActivity(), className + " added", Toast.LENGTH_LONG).show();
+                        // Editing a class, just update the old course with the new course
+                        if(editting) {
+                            dba.updateClass(oldCourse, newCourse);
+                            displayToast(className + " editted");
                             refreshFragment();
                         }
-                        // Class exists, ask user if they'd like to replace one in database with the one they just made
                         else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setTitle("A class with this name already exists - replace it?");
-                            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dba.createClass(newCourse);
-                                    //Toast.makeText(getActivity(), className + " replaced", Toast.LENGTH_LONG).show();
-                                    dialog.dismiss();
-                                    refreshFragment();
-                                }
-                            });
-                            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    Toast.makeText(getActivity(), className + " not replaced", Toast.LENGTH_LONG).show();
-                                    dialog.dismiss();
-                                    refreshFragment();
-                                }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
+                            // Not editing and class doesn't exist - add it to database
+                            if(!exists) {
+                                dba.createClass(newCourse);
+                                displayToast(className + " added");
+                                refreshFragment();
+                            }
+                            // Not editing and class exists, ask user if they'd like to replace one in database with the one they just made
+                            else {
+                                Log.e("what", "what");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setTitle("A class with this name already exists - replace it?");
+                                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dba.createClass(newCourse);
+                                        displayToast(className + " replaced");
+                                        dialog.dismiss();
+                                        refreshFragment();
+                                    }
+                                });
+                                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        displayToast(className + " not replaced");
+                                        dialog.dismiss();
+                                        refreshFragment();
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
                         }
                         popupWindow.dismiss();
                     }
@@ -235,6 +335,10 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
         getActivity().getFragmentManager().beginTransaction().replace(R.id.contentFrame, new HomeScreenFragment()).commit();
     }
 
+    /* Displays a message at the bottom of the screen for a couple seconds - to be used when adding/editing/deleting courses */
+    public void displayToast(String message) {
+        Toast.makeText(getActivity(),  message, Toast.LENGTH_SHORT).show();
+    }
 
 
     /* Dummy method here because Android Studio doesn't recognize that getClasses()

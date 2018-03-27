@@ -17,7 +17,7 @@
             android:id="@+id/addClassTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_class_title"
+            android:text="Add Course"
             android:layout_marginBottom="10sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:gravity="center"/>
@@ -70,6 +70,8 @@
                         android:id="@+id/gradeReceivedEditText"
                         android:layout_width="70dp"
                         android:layout_marginLeft="20dp"
+                        android:maxLength="2"
+                        android:inputType="textCapWords"
                         android:layout_height="wrap_content"
                         android:hint="Grade"/>
 
@@ -80,7 +82,7 @@
                         android:layout_marginLeft="20dp"
                         android:scaleX="1"
                         android:scaleY="1"
-                        android:text="In progress"/>
+                        android:text="Completed"/>
 
                 </LinearLayout>
 
@@ -89,7 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Add Class"
+                    android:text="Add Course"
                     android:layout_marginTop="50dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
