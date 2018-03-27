@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:id="@+id/gpaGoalTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gpa_goal_title"
+            android:layout_marginBottom="10sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/gpaGoalBackButton"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:drawableTop="@drawable/ic_close_white_32dp"
+            android:background="#ff0000"
+            android:layout_alignParentLeft="true"/>
+
+        <LinearLayout
+            android:id="@+id/gpaGoalContentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/gpaGoalBackButton"
+            android:layout_alignStart="@+id/gpaGoalBackButton"
+            android:layout_below="@+id/gpaGoalTitle"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/gpaGoalGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gpa_goal_goal"
+                android:layout_marginBottom="5dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:id="@+id/gpaGoalCurrent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gpa_goal_current"
+                android:layout_marginBottom="5dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:id="@+id/gpaGoalCourse1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gpa_goal_course1"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/gpaGoalCourse2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gpa_goal_course2"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/gpaGoalCourse3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gpa_goal_course3"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/gpaGoalCourse4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gpa_goal_course4"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/gpaGoalCourse5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gpa_goal_course5"
+                android:layout_marginBottom="5dp"/>
+            <TextView
+                android:id="@+id/gpaGoalCourse6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gpa_goal_course6"
+                android:layout_marginBottom="5dp"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
