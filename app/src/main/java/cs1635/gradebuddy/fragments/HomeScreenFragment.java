@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.text.TextWatcher;
 import android.widget.RelativeLayout;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs1635.gradebuddy.R;
+import cs1635.gradebuddy.activities.Calculations;
 import cs1635.gradebuddy.activities.MainActivity;
 import cs1635.gradebuddy.database.DatabaseAccess;
 import cs1635.gradebuddy.database.GetClassesListener;
@@ -137,7 +139,7 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                         section.parent = course;
                         section.children.add("Course name: " + currentCourse.getName());
                         section.children.add("Number of Credits: " + (String) Integer.toString(currentCourse.getCredits()));
-                        section.children.add("Current Grade: " + currentCourse.getGrade());
+                        section.children.add("Current Grade: " + currentCourse.getDesiredGrade());
                         layout.addSection(section);
                     }
                 }
@@ -340,6 +342,33 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
         popupWindow.setFocusable(true);
         popupWindow.showAsDropDown(popupView, 0, 0);
         ((MainActivity) getActivity()).dimBehind(popupWindow);
+
+        final  LinearLayout ll = (LinearLayout)popupView.findViewById(R.id.currentClasses);
+        DatabaseAccess dba = new DatabaseAccess();
+        final List<String> notGraded = new ArrayList<>();
+        dba.setGetClassListener(new GetClassesListener() {
+            @Override
+            public void getClasses(List<Course> courses) {
+                for(Course currentCourse : courses) {
+                    String checkGoalClasses = "";
+                    if(currentCourse.getGrade().equals("")) {
+                        checkGoalClasses = checkGoalClasses + currentCourse.getName() + " " + currentCourse.getDesiredGrade() + "\n";
+                        TextView tv = new TextView(getActivity());
+                        tv.setText(checkGoalClasses);
+                        tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        ll.addView(tv);
+                        if(!currentCourse.getDesiredGrade().equals("")) {
+                            notGraded.add(currentCourse.getDesiredGrade());
+                            Calculations calc = new Calculations(0, 0);
+                            double gpaAverage = calc.currentGPACalculatons(notGraded);
+                            String gpaString = Double.toString(gpaAverage);
+                            TextView gpa = (TextView)popupView.findViewById(R.id.gpaGoalCurrent);
+                            gpa.setText("Current GPA: " + gpaString);
+                        }
+                    }
+                }
+            }
+        });
 
         Button backButton = (Button) popupView.findViewById(R.id.gpaGoalBackButton);
         backButton.setOnClickListener(new View.OnClickListener() {

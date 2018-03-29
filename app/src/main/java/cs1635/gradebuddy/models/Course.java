@@ -6,6 +6,7 @@ public class Course {
     private String name;
     private int credits;
     private String grade;
+    private String desiredGrade;
 
     public Course() { }
 
@@ -13,6 +14,14 @@ public class Course {
         name = cName;
         credits = cCredits;
         grade = cGrade;
+        desiredGrade = "";
+    }
+
+    public Course(String cName, int cCredits, String cGrade, String d) {
+        name = cName;
+        credits = cCredits;
+        grade = cGrade;
+        desiredGrade = d;
     }
 
     public String getName() {
@@ -27,6 +36,8 @@ public class Course {
         return grade;
     }
 
+    public String getDesiredGrade() { return desiredGrade; }
+
     public void setName(String n) {
         name = n;
     }
@@ -38,5 +49,7 @@ public class Course {
     public void setGrade(String g) {
         grade = g;
     }
+
+    public void setDesiredGrade(String d) { desiredGrade = d; }
 
 }

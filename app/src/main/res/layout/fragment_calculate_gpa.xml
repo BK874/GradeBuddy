@@ -31,57 +31,90 @@
                 android:id="@+id/expectedTermGpaTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Expected Term GPA:"
-                android:textSize="20sp"
+                android:text="GPA Goal:"
+                android:textSize="15dp"
                 android:layout_alignParentLeft="true"/>
 
             <TextView
                 android:id="@+id/expectedTermGpaNumberTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4.0"
-                android:textSize="20sp"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/currentGpa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/expectedTermGpaLayout">
+
+            <TextView
+                android:id="@+id/currentGpaTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Current GPA:"
+                android:textSize="15dp"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/currentGpaNumberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
                 android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
 
         <ScrollView
-            android:id="@+id/classesScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="200sp"
-            android:layout_marginTop="10sp"
-            android:background="#ffffff"
-            android:orientation="vertical"
-            android:layout_below="@+id/expectedTermGpaLayout">
+            android:layout_below="@id/currentGpa"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
-        </ScrollView>
-
-        <RelativeLayout
-            android:id="@+id/currentGpaLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10sp"
-            android:layout_below="@+id/classesScrollView">
-
-            <TextView
-                android:id="@+id/currentTermGpaTextView"
+            <LinearLayout
+                android:id="@+id/goalsInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Current Term GPA:"
-                android:textSize="20sp"
-                android:layout_alignParentLeft="true"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/currentTermGpaNumberTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4.0"
-                android:textSize="20sp"
-                android:layout_alignParentRight="true"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Set your goals!"
+                    android:gravity="center_horizontal"
+                    android:textSize="30dp"/>
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/gpaGoalLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/gpaGoalTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="GPA Goal:"
+                        android:layout_weight="0.7"/>
+
+                    <EditText
+                        android:id="@+id/gpaGoal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:text="3.5"
+                        android:inputType="numberDecimal"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </RelativeLayout>
 

@@ -52,46 +52,16 @@
                 android:id="@+id/gpaGoalCurrent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/gpa_goal_current"
                 android:layout_marginBottom="5dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-            <TextView
-                android:id="@+id/gpaGoalCourse1"
+            <LinearLayout
+                android:id="@+id/currentClasses"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gpa_goal_course1"
-                android:layout_marginBottom="5dp"/>
-            <TextView
-                android:id="@+id/gpaGoalCourse2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gpa_goal_course2"
-                android:layout_marginBottom="5dp"/>
-            <TextView
-                android:id="@+id/gpaGoalCourse3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gpa_goal_course3"
-                android:layout_marginBottom="5dp"/>
-            <TextView
-                android:id="@+id/gpaGoalCourse4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gpa_goal_course4"
-                android:layout_marginBottom="5dp"/>
-            <TextView
-                android:id="@+id/gpaGoalCourse5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gpa_goal_course5"
-                android:layout_marginBottom="5dp"/>
-            <TextView
-                android:id="@+id/gpaGoalCourse6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/gpa_goal_course6"
-                android:layout_marginBottom="5dp"/>
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
 
 
         </LinearLayout>
