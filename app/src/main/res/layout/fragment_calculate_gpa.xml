@@ -40,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
+                android:text="2"
                 android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
@@ -69,8 +70,9 @@
         </RelativeLayout>
 
         <ScrollView
+            android:id="@+id/goalsInputScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="310dp"
             android:layout_below="@id/currentGpa"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
@@ -100,13 +102,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="GPA Goal:"
-                        android:layout_weight="0.7"/>
+                        android:layout_weight="0.8"/>
 
                     <EditText
                         android:id="@+id/gpaGoal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.2"
+                        android:gravity="center_horizontal"
                         android:text="3.5"
                         android:inputType="numberDecimal"/>
 
@@ -115,6 +118,15 @@
             </LinearLayout>
 
         </ScrollView>
+
+        <Button
+            android:id="@+id/submitGoalsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Goals"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_below="@+id/goalsInputScrollView"/>
 
     </RelativeLayout>
 

@@ -240,7 +240,7 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
             public void beforeTextChanged(CharSequence s, int i, int i1, int i2) { }
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                if(currentClassCheckBox.isChecked() && (s.toString().equals("A+") || s.toString().equals("A") || s.toString().equals("A-") || s.toString().equals("B+") || s.toString().equals("B") || s.toString().equals("B-") || s.toString().equals("C+") || s.toString().equals("C") || s.toString().equals("C-") || s.toString().equals("D+") || s.toString().equals("D") || s.toString().equals("D-") || s.toString().equals("F") || s.toString().equals("")))
+                if(currentClassCheckBox.isChecked() && (s.toString().equals("A") || s.toString().equals("A-") || s.toString().equals("B+") || s.toString().equals("B") || s.toString().equals("B-") || s.toString().equals("C+") || s.toString().equals("C") || s.toString().equals("C-") || s.toString().equals("D") || s.toString().equals("F") || s.toString().equals("")))
                     addClassButton.setEnabled(true);
                 else
                     addClassButton.setEnabled(false);
@@ -262,7 +262,7 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                 }
                 else if(currentClassCheckBox.isChecked()) {
                     gradeEditText.setEnabled(true);
-                    if (currentClassCheckBox.isChecked() && (gradeString.toString().equals("A+") || gradeString.toString().equals("A") || gradeString.toString().equals("A-") || gradeString.toString().equals("B+") || gradeString.toString().equals("B") || gradeString.toString().equals("B-") || gradeString.toString().equals("C+") || gradeString.toString().equals("C") || gradeString.toString().equals("C-") || gradeString.toString().equals("D+") || gradeString.toString().equals("D") || gradeString.toString().equals("D-") || gradeString.toString().equals("F")))
+                    if (currentClassCheckBox.isChecked() && (gradeString.toString().equals("A") || gradeString.toString().equals("A-") || gradeString.toString().equals("B+") || gradeString.toString().equals("B") || gradeString.toString().equals("B-") || gradeString.toString().equals("C+") || gradeString.toString().equals("C") || gradeString.toString().equals("C-")  || gradeString.toString().equals("D") || gradeString.toString().equals("F")))
                         addClassButton.setEnabled(true);
                     else
                         addClassButton.setEnabled(false);
