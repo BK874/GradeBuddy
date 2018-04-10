@@ -13,12 +13,14 @@ import java.util.List;
 
 import cs1635.gradebuddy.activities.MainActivity;
 import cs1635.gradebuddy.models.Course;
+import cs1635.gradebuddy.models.GpaGoal;
 
 /* Class that handles interaction with the database. It also keeps track of the current user */
 public class DatabaseAccess extends AppCompatActivity {
     private FirebaseDatabase database;
     private String currentUser;
     private GetClassesListener mListener;
+    private GetGpaGoalListener gpaGoalListener;
 
     public DatabaseAccess() {
         currentUser = MainActivity.getCurrentUser();
@@ -29,6 +31,7 @@ public class DatabaseAccess extends AppCompatActivity {
         // Example of getting a List<Course> is in the onCreate() method in HistoryFragment.
         if(!currentUser.equals("")) {
             DatabaseReference coursesRef = database.getReference("users").child(currentUser).child("classes");
+            DatabaseReference gpaGoalRef = database.getReference("users").child(currentUser);
             coursesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -39,6 +42,24 @@ public class DatabaseAccess extends AppCompatActivity {
                     }
                     if (mListener != null)
                         mListener.getClasses(courses);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+            gpaGoalRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String gpaGoal = "0.0";
+                    for(DataSnapshot child: dataSnapshot.getChildren()) {
+                        if(child.getKey().equals("gpagoal")) {
+                            GpaGoal goal = child.getValue(GpaGoal.class);
+                            gpaGoal = goal.getGpaGoal();
+                        }
+                    }
+                    if (gpaGoalListener != null)
+                        gpaGoalListener.getGpaGoal(gpaGoal);
                 }
 
                 @Override
@@ -68,6 +89,10 @@ public class DatabaseAccess extends AppCompatActivity {
         });
     }
 
+    public void setUserGpaGoal(GpaGoal gpa) {
+        database.getReference("users").child(currentUser).child("gpagoal").setValue(gpa);
+    }
+
     /* Creates a course in the database for the current user */
     public void createClass(Course newCourse) {
         database.getReference("users").child(currentUser).child("classes").child(newCourse.getName()).setValue(newCourse);
@@ -86,6 +111,11 @@ public class DatabaseAccess extends AppCompatActivity {
     /* Listener to be used in fragments/activities that implement this class - example in HistoryFragment */
     public void setGetClassListener(GetClassesListener eventListener) {
         this.mListener = eventListener;
+    }
+
+    /* Listener to be used in fragments/activities that implement this class - example in HistoryFragment */
+    public void setGetGpaGoalListener(GetGpaGoalListener eventListener) {
+        this.gpaGoalListener = eventListener;
     }
 
 }

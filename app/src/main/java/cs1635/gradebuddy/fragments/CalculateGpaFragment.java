@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -25,10 +27,12 @@ import cs1635.gradebuddy.R;
 import cs1635.gradebuddy.activities.Calculations;
 import cs1635.gradebuddy.database.DatabaseAccess;
 import cs1635.gradebuddy.database.GetClassesListener;
+import cs1635.gradebuddy.database.GetGpaGoalListener;
 import cs1635.gradebuddy.models.Course;
+import cs1635.gradebuddy.models.GpaGoal;
 
 /* Fragment that allows the user to calculate the GPA */
-public class CalculateGpaFragment extends Fragment implements GetClassesListener, View.OnClickListener {
+public class CalculateGpaFragment extends Fragment implements GetClassesListener, GetGpaGoalListener, View.OnClickListener {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState){
@@ -36,6 +40,18 @@ public class CalculateGpaFragment extends Fragment implements GetClassesListener
         final View view = inflater.inflate(R.layout.fragment_calculate_gpa, container, false);
 
         final DatabaseAccess dba = new DatabaseAccess();
+
+        dba.setGetGpaGoalListener(new GetGpaGoalListener() {
+            @Override
+            public void getGpaGoal(String gpaGoal) {
+                Log.d("What", "guy");
+                EditText gpaGoalEditText = (EditText)view.findViewById(R.id.gpaGoal);
+                gpaGoalEditText.setText(gpaGoal);
+                TextView gpaGoalTextView = (TextView)view.findViewById(R.id.expectedTermGpaNumberTextView);
+                gpaGoalTextView.setText(gpaGoal);
+            }
+        });
+
         dba.setGetClassListener(new GetClassesListener() {
             @Override
             public void getClasses(List<Course> courses) {
@@ -43,6 +59,12 @@ public class CalculateGpaFragment extends Fragment implements GetClassesListener
                 List<String> notGradedCourses = new ArrayList<>();
                 final List<Pair> pairs = new ArrayList<>();
                 final Button submitBtn = (Button)view.findViewById(R.id.submitGoalsButton);
+                LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.gpaGoalLayout);
+                Pair gpaGoalPair = new Pair();
+                Course gpaGoalDummyCourse = new Course("gpagoal", 0, "");
+                gpaGoalPair.setCourse(gpaGoalDummyCourse);
+                gpaGoalPair.setLinearLayout(linearLayout);
+                pairs.add(gpaGoalPair);
                 for(Course currentCourse : courses) {
                     if(currentCourse.getGrade().equals("")) {
                         final Course currCourse = currentCourse;
@@ -52,6 +74,7 @@ public class CalculateGpaFragment extends Fragment implements GetClassesListener
                         tv.setText(currentCourse.getName());
                         tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.8f));
                         final EditText et = new EditText(getActivity());
+                        et.setSelection(et.length());
                         et.setText(currentCourse.getDesiredGrade());
                         et.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
                         et.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -62,10 +85,6 @@ public class CalculateGpaFragment extends Fragment implements GetClassesListener
                         pair.setCourse(currentCourse);
                         pair.setLinearLayout(nl);
                         pairs.add(pair);
-
-                        final EditText etgpa = (EditText)view.findViewById(R.id.gpaGoal);
-                        TextView tvgpa = (TextView)view.findViewById(R.id.expectedTermGpaNumberTextView);
-                        tvgpa.setText(etgpa.getText().toString());
 
                         ll.addView(nl);
 
@@ -78,14 +97,22 @@ public class CalculateGpaFragment extends Fragment implements GetClassesListener
                     @Override
                     public void onClick(View view) {
                         for(Pair p : pairs) {
-                            EditText layoutsEditText = (EditText)p.getLinearLayout().getChildAt(1);
-                            String desired = layoutsEditText.getText().toString();
-                            String name = p.getCourse().getName();
-                            String grade = p.getCourse().getGrade();
-                            Course oldCourse = new Course(name, p.getCourse().getCredits(), grade, "");
-                            Course newCourse = new Course(name, p.getCourse().getCredits(), grade, desired);
-                            dba.updateClass(oldCourse, newCourse);
+                            if(p.getCourse().getName().equals("gpagoal")) {
+                                EditText gpaGoalEditText = (EditText)p.getLinearLayout().getChildAt(1);
+                                GpaGoal gpaGoal = new GpaGoal(gpaGoalEditText.getText().toString());
+                                dba.setUserGpaGoal(gpaGoal);
+                            }
+                            else {
+                                EditText layoutsEditText = (EditText) p.getLinearLayout().getChildAt(1);
+                                String desired = layoutsEditText.getText().toString();
+                                String name = p.getCourse().getName();
+                                String grade = p.getCourse().getGrade();
+                                Course oldCourse = new Course(name, p.getCourse().getCredits(), grade, "");
+                                Course newCourse = new Course(name, p.getCourse().getCredits(), grade, desired);
+                                dba.updateClass(oldCourse, newCourse);
+                            }
                         }
+                        displayToast("Goals Set!");
                         refreshFragment();
                     }
                 });
@@ -108,9 +135,15 @@ public class CalculateGpaFragment extends Fragment implements GetClassesListener
         tr.commit();
     }
 
+    /* Displays a message at the bottom of the screen for a couple seconds - to be used when adding/editing/deleting courses */
+    public void displayToast(String message) {
+        Toast.makeText(getActivity(),  message, Toast.LENGTH_SHORT).show();
+    }
+
     public void onClick(View view) {}
 
     public void getClasses(List<Course> courses) { }
+    public void getGpaGoal(String gpaGoal) { }
 
 }
 

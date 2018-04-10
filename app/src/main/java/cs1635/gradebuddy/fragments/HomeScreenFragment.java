@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import cs1635.gradebuddy.activities.Calculations;
 import cs1635.gradebuddy.activities.MainActivity;
 import cs1635.gradebuddy.database.DatabaseAccess;
 import cs1635.gradebuddy.database.GetClassesListener;
+import cs1635.gradebuddy.database.GetGpaGoalListener;
 import cs1635.gradebuddy.models.Course;
 import cs1635.gradebuddy.fragments.Model.ClassCategory;
 import cs1635.gradebuddy.fragments.Model.Classes;
@@ -46,7 +48,7 @@ import iammert.com.expandablelib.Section;
 
 
 /* Fragment that acts as the home screen - shows current courses and allows for adding of new courses */
-public class HomeScreenFragment extends Fragment implements View.OnClickListener, GetClassesListener {
+public class HomeScreenFragment extends Fragment implements View.OnClickListener, GetGpaGoalListener, GetClassesListener {
 
     /* Called when this Fragment is initialized */
     @Override
@@ -294,7 +296,7 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                         // Editing a class, just update the old course with the new course
                         if(editting) {
                             dba.updateClass(oldCourse, newCourse);
-                            displayToast(className + " editted");
+                            displayToast(className + " edited");
                             refreshFragment();
                         }
                         else {
@@ -345,6 +347,15 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
 
         final  LinearLayout ll = (LinearLayout)popupView.findViewById(R.id.currentClasses);
         DatabaseAccess dba = new DatabaseAccess();
+
+        dba.setGetGpaGoalListener(new GetGpaGoalListener() {
+            @Override
+            public void getGpaGoal(String gpaGoal) {
+                TextView gpaGoalTextView = (TextView)popupView.findViewById(R.id.gpaGoalGoal);
+                gpaGoalTextView.setText("Term GPA Goal:" + " " + gpaGoal);
+            }
+        });
+
         final List<String> notGraded = new ArrayList<>();
         dba.setGetClassListener(new GetClassesListener() {
             @Override
@@ -355,7 +366,9 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                         checkGoalClasses = checkGoalClasses + currentCourse.getName() + " " + currentCourse.getDesiredGrade() + "\n";
                         TextView tv = new TextView(getActivity());
                         tv.setText(checkGoalClasses);
-                        tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        tv.setGravity(Gravity.CENTER);
+                        tv.setTextSize(15f);
                         ll.addView(tv);
                         if(!currentCourse.getDesiredGrade().equals("")) {
                             notGraded.add(currentCourse.getDesiredGrade());
@@ -363,7 +376,7 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
                             double gpaAverage = calc.currentGPACalculatons(notGraded);
                             String gpaString = Double.toString(gpaAverage);
                             TextView gpa = (TextView)popupView.findViewById(R.id.gpaGoalCurrent);
-                            gpa.setText("Current GPA: " + gpaString);
+                            gpa.setText("Term GPA: " + gpaString);
                         }
                     }
                 }
@@ -391,5 +404,6 @@ public class HomeScreenFragment extends Fragment implements View.OnClickListener
     /* Dummy method here because Android Studio doesn't recognize that getClasses()
      * in the Listener implements the interface. This method doesn't do anything */
     public void getClasses(List<Course> courses) { }
+    public void getGpaGoal(String gpaGoal) { }
 
 }

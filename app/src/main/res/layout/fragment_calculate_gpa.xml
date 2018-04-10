@@ -31,7 +31,7 @@
                 android:id="@+id/expectedTermGpaTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="GPA Goal:"
+                android:text="Term GPA Goal:"
                 android:textSize="15dp"
                 android:layout_alignParentLeft="true"/>
 
@@ -40,7 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
-                android:text="2"
                 android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
@@ -56,7 +55,7 @@
                 android:id="@+id/currentGpaTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Current GPA:"
+                android:text="Term GPA:"
                 android:textSize="15dp"
                 android:layout_alignParentLeft="true"/>
 
@@ -101,7 +100,7 @@
                         android:id="@+id/gpaGoalTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="GPA Goal:"
+                        android:text="Term GPA Goal:"
                         android:layout_weight="0.8"/>
 
                     <EditText
@@ -110,7 +109,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.2"
                         android:gravity="center_horizontal"
-                        android:text="3.5"
                         android:inputType="numberDecimal"/>
 
                 </LinearLayout>
