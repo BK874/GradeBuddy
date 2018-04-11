@@ -174,6 +174,7 @@ public class HistoryFragment extends Fragment implements GetClassesListener {
                         displayToast(courseToBeDeleted.getName() + " deleted");
                         dialog.dismiss();
                         refreshFragment();
+                        popupWindow.dismiss();
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -183,7 +184,6 @@ public class HistoryFragment extends Fragment implements GetClassesListener {
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-                popupWindow.dismiss();
             }
         });
 
@@ -312,7 +312,6 @@ public class HistoryFragment extends Fragment implements GetClassesListener {
                             }
                             // Not editing and class exists, ask user if they'd like to replace one in database with the one they just made
                             else {
-                                Log.e("what", "what");
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                 builder.setTitle("A class with this name already exists - replace it?");
                                 builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
